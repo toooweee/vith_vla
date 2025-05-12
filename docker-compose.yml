@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5430:5432"
+    env_file:
+      - ".env"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - vith_vla
+
+volumes:
+  postgres_data:
+networks:
+  vith_vla:

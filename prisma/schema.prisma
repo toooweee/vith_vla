@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  firstName String?
+  lastName  String?
+  bookmarks Bookmark[]
+
+  token     Token?
+  createdAt DateTime @default(now()) @map("created_at")
+  updated   DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updated   DateTime @updatedAt @map("updated_at")
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique @map("user_id")
+
+  @@map("tokens")
+}
+
+model Bookmark {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  link        String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updated     DateTime @updatedAt @map("updated_at")
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId Int  @map("user_id")
+
+  @@map("bookmarks")
+}
