@@ -1,0 +1,38 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id Int [pk, increment]
+  email String [unique, not null]
+  password String [not null]
+  firstName String
+  lastName String
+  bookmarks bookmarks [not null]
+  token tokens
+  createdAt DateTime [default: `now()`, not null]
+  updated DateTime [not null]
+}
+
+Table tokens {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updated DateTime [not null]
+  user users [not null]
+  userId Int [unique, not null]
+}
+
+Table bookmarks {
+  id Int [pk, increment]
+  title String [not null]
+  description String
+  link String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updated DateTime [not null]
+  user users [not null]
+  userId Int [not null]
+}
+
+Ref: tokens.userId - users.id [delete: Cascade]
+
+Ref: bookmarks.userId > users.id [delete: Restrict]
