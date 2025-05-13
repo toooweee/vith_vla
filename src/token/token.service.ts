@@ -89,7 +89,9 @@ export class TokenService {
 
       const { id, email } = payload;
 
-      return await this.generateTokens({ id, email });
+      const tokens = await this.generateTokens({ id, email });
+      await this.saveRefreshToken(id, tokens.refreshToken);
+      return tokens;
     } catch (e) {
       if (e instanceof UnauthorizedException) {
         throw e;
