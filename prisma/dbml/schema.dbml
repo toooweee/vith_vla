@@ -15,7 +15,7 @@ Table users {
 }
 
 Table tokens {
-  id Int [pk, increment]
+  token String [pk]
   createdAt DateTime [default: `now()`, not null]
   updated DateTime [not null]
   user users [not null]
